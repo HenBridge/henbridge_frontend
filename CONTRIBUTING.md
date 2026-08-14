@@ -1,8 +1,8 @@
-# Contributing to Lafiya
+# Contributing to HenBridge
 
-Thank you for your interest in contributing to Lafiya! Lafiya is a patient-owned emergency health card on Stellar, designed as an open-source Digital Public Good. By participating in this project, you help build trusted, decentralized healthcare access.
+Thank you for your interest in contributing to HenBridge! HenBridge is a patient-owned emergency health card on Stellar, designed as an open-source Digital Public Good. By participating in this project, you help build trusted, decentralized healthcare access.
 
-This guide outlines our development workflow, coding standards, and how to coordinate changes across the Lafiya ecosystem.
+This guide outlines our development workflow, coding standards, and how to coordinate changes across the HenBridge ecosystem.
 
 ---
 
@@ -44,7 +44,7 @@ We follow **Conventional Commits**:
 
 ## Supabase Database Migrations
 
-Lafiya uses Supabase for database, authentication, and file storage. 
+HenBridge uses Supabase for database, authentication, and file storage. 
 
 ### 1. Creating a Migration
 If your change requires database alterations (e.g., adding a table, adding a column, modifying an RLS policy, or editing an RPC function):
@@ -74,11 +74,11 @@ When updating the database schema:
 
 ## Coordinating Cross-Repo Changes (Shared Contracts)
 
-Lafiya is organized across five separate repositories in the `lafiya-xyz` organization. Some interfaces form **Shared Contracts** and must stay in sync across repositories. 
+HenBridge is organized across five separate repositories in the `henbridge` organization. Some interfaces form **Shared Contracts** and must stay in sync across repositories. 
 
 If your changes affect any of the following, you **must** flag it in your Pull Request:
 
-1. **Attestation Schema**: The structure of the on-chain attestation (mirrored in `lafiya-contracts` as a Soroban Rust struct):
+1. **Attestation Schema**: The structure of the on-chain attestation (mirrored in `henbridge-contracts` as a Soroban Rust struct):
    ```rust
    Attestation {
        record_hash: BytesN<32>
@@ -86,8 +86,8 @@ If your changes affect any of the following, you **must** flag it in your Pull R
        timestamp: u64
    }
    ```
-   If you change hashing logic or fields in `lafiya-web`, the corresponding smart contracts must be updated in tandem.
-2. **Emergency Data Model**: The specific decision-relevant patient fields shown on the public card page (documented in `lafiya-docs` concept papers). Casing, field names, and structures must remain identical across the stack.
+   If you change hashing logic or fields in `henbridge-web`, the corresponding smart contracts must be updated in tandem.
+2. **Emergency Data Model**: The specific decision-relevant patient fields shown on the public card page (documented in `henbridge-docs` concept papers). Casing, field names, and structures must remain identical across the stack.
 3. **Environment & Configuration Keys**: Shared configuration keys in `.env.example` (such as contract IDs or stellar RPC urls).
 
 Always mention in your PR description if you have touched any of these contracts so the repository maintainers can coordinate the matching changes in the other repositories.

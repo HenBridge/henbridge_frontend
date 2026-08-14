@@ -2,14 +2,14 @@
 
 ## Supported Versions / Branches
 
-This policy applies to all branches of the `lafiya-web` repository.
+This policy applies to all branches of the `henbridge-web` repository.
 
 ## Reporting a Vulnerability
 
 Please report security issues **privately** via one of the following methods:
 
 - **GitHub Private Security Advisory**: Open a private advisory through the repository's "Security" tab.
-- **Email**: Send details to `security@lafiya-xyz.org` (encrypted email preferred).
+- **Email**: Send details to `security@henbridge.org` (encrypted email preferred).
 
 ## Scope
 
