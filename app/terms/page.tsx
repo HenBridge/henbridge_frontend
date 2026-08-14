@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms — Lafiya",
+  title: "Terms — HenBridge",
   robots: { index: false, follow: false },
 };
 
@@ -26,7 +26,7 @@ export default function TermsPage() {
             Pre-alpha software
           </h2>
           <p>
-            Lafiya is pre-alpha software running on the Stellar testnet. It is
+            HenBridge is pre-alpha software running on the Stellar testnet. It is
             not yet audited and is not a medical device. Do not rely on it for
             emergency treatment decisions.
           </p>
@@ -37,7 +37,7 @@ export default function TermsPage() {
             Not a substitute for professional medical judgment
           </h2>
           <p>
-            Lafiya is an information aid. Verified indicators reflect that a
+            HenBridge is an information aid. Verified indicators reflect that a
             record was attested by a registered health worker; they are not a
             clinical guarantee. Treatment decisions remain the responsibility of
             the attending clinician.
@@ -60,7 +60,7 @@ export default function TermsPage() {
             Availability
           </h2>
           <p>
-            Lafiya is provided as-is, without warranties of any kind. We do not
+            HenBridge is provided as-is, without warranties of any kind. We do not
             guarantee continuous or error-free operation. The service may be
             modified, suspended, or discontinued at any time.
           </p>
@@ -71,7 +71,7 @@ export default function TermsPage() {
             Governing law
           </h2>
           <p>
-            Lafiya is developed under the Nigeria Data Protection Act (2023) and
+            HenBridge is developed under the Nigeria Data Protection Act (2023) and
             is designed to comply with its requirements for consent, encryption,
             and minimal disclosure.
           </p>

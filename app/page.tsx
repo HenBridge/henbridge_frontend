@@ -11,7 +11,7 @@ export default function Home() {
           Your vitals, verified.
         </h1>
         <p className="max-w-xl text-lg text-zinc-600 dark:text-zinc-400">
-          Lafiya is a free, patient-owned emergency health card. Blood group,
+          HenBridge is a free, patient-owned emergency health card. Blood group,
           genotype, allergies, and current medications travel with you as a
           scannable QR code, work offline, and can be cryptographically verified
           by a health worker.

@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Lafiya — Your vitals, verified",
+  title: "HenBridge — Your vitals, verified",
   description:
-    "A patient-owned emergency health card on Stellar. Your vitals, verified. When you can't speak, Lafiya does.",
+    "A patient-owned emergency health card on Stellar. Your vitals, verified. When you can't speak, HenBridge does.",
 };
 
 export default function RootLayout({

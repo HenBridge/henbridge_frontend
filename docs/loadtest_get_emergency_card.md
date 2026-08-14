@@ -4,7 +4,7 @@
 
 This harness measures the latency and error rate of the **public emergency card
 page** (`app/(public)/card/[id]`) under concurrent load. It is the single most
-latency-critical page in Lafiya — a first responder scanning a QR code in the
+latency-critical page in HenBridge — a first responder scanning a QR code in the
 field must see a patient's blood group, genotype, and drug allergies within
 seconds, even on a 2G/EDGE connection (see `docs/perf-budget.md`).
 

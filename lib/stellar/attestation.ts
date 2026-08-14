@@ -17,7 +17,7 @@ import { serverEnv } from "@/lib/env-server";
  * Live M1 attestation lookup.
  *
  * When `ATTESTATION_CONTRACT_ID` is configured, `getAttestation` calls the
- * real `get_attestation` Soroban function on the deployed `lafiya-contracts`
+ * real `get_attestation` Soroban function on the deployed `henbridge-contracts`
  * registry over JSON-RPC (see README.md > M1 — Attestation). The call is
  * read-only: we `simulateTransaction` it, which costs nothing and needs no
  * signing, but still executes the contract and returns the on-chain

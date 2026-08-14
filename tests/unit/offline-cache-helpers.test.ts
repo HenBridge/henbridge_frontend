@@ -47,7 +47,7 @@ describe("offline-cache-helpers", () => {
       const out = injectOfflineBanner(html, "2024-01-02T03:04:05.000Z");
 
       const bodyIdx = out.indexOf("<body");
-      const bannerIdx = out.indexOf('class="lafiya-offline-banner"');
+      const bannerIdx = out.indexOf('class="henbridge-offline-banner"');
       const cardIdx = out.indexOf("<h1>Card</h1>");
 
       expect(bodyIdx).toBeGreaterThanOrEqual(0);
@@ -61,7 +61,7 @@ describe("offline-cache-helpers", () => {
         '<html><head></head><body class="foo" data-x="1"><p>x</p></body></html>';
       const out = injectOfflineBanner(html, "2024-01-02T03:04:05.000Z");
       expect(out).toContain('<body class="foo" data-x="1">');
-      expect(out).toContain("lafiya-offline-banner");
+      expect(out).toContain("henbridge-offline-banner");
     });
 
     it("prepends the banner when the document has no <body> tag", () => {
@@ -73,7 +73,7 @@ describe("offline-cache-helpers", () => {
 
     it("returns just the banner for empty input", () => {
       const out = injectOfflineBanner("", "2024-01-02T03:04:05.000Z");
-      expect(out).toContain("lafiya-offline-banner");
+      expect(out).toContain("henbridge-offline-banner");
     });
   });
 });

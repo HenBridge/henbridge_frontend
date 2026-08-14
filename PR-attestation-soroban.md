@@ -6,7 +6,7 @@
 function. The public card page and the `/api/attestation/[recordHash]` route were already
 wired to that exact signature specifically so the real swap wouldn't touch callers. This
 change performs that swap: when `ATTESTATION_CONTRACT_ID` is configured, `getAttestation`
-now calls the deployed `lafiya-contracts` `get_attestation` Soroban function over RPC. When
+now calls the deployed `henbridge-contracts` `get_attestation` Soroban function over RPC. When
 it's unset (local dev, CI, pre-deploy), it keeps serving the original mock so the verified
 indicator still renders.
 
@@ -32,8 +32,8 @@ indicator still renders.
 - **No changes.** Both still call `getAttestation(recordHash)` and read `attestation !== null`.
 
 ### `README.md`
-- M1 roadmap: checked off the `lafiya-web` items (real RPC call + verified indicator driven by
-  it); the contract-deployment and allowlisted-attester items stay in `lafiya-contracts`.
+- M1 roadmap: checked off the `henbridge-web` items (real RPC call + verified indicator driven by
+  it); the contract-deployment and allowlisted-attester items stay in `henbridge-contracts`.
 - Documented the `ATTESTATION_CONTRACT_ID` optional/local-dev fallback.
 - Updated "Core Components" and Dependencies to reflect that `@stellar/stellar-sdk` is now a
   real dependency and the stub is live.
@@ -53,9 +53,9 @@ indicator still renders.
 - `npm run build` — succeeds with the CI env (no `ATTESTATION_CONTRACT_ID` → mock fallback).
 
 ## Notes / coordination needed (cross-repo)
-- This repo (`lafiya-web`) cannot deploy `lafiya-contracts`; the `ATTESTATION_CONTRACT_ID` env
+- This repo (`henbridge-web`) cannot deploy `henbridge-contracts`; the `ATTESTATION_CONTRACT_ID` env
   var must be set once that contract is deployed to testnet. The web-side swap is complete.
-- The exact on-chain `Attestation` field names/casing depend on the `lafiya-contracts` spec;
+- The exact on-chain `Attestation` field names/casing depend on the `henbridge-contracts` spec;
   `decodeAttestation` is defensive (handles snake/camel casing and `bigint` timestamps) but
   should be confirmed against the real contract's return XDR during integration.
 - Recommended follow-up: a recorded live-testnet fixture (or a `test:integration` against

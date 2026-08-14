@@ -56,4 +56,4 @@ Both pages are versioned with a visible `Version` and `Last updated` date (`v1.0
 
 ## Follow-up
 
-Cross-check the final policy copy against `lafiya-docs` for consistency before merging. When the consent-log feature lands, reference `privacy v1.0.0` explicitly in the consent record.
+Cross-check the final policy copy against `henbridge-docs` for consistency before merging. When the consent-log feature lands, reference `privacy v1.0.0` explicitly in the consent record.

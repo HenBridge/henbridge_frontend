@@ -27,7 +27,7 @@ export function DeleteAccountButton() {
     <form action={formAction} className="flex flex-col gap-4">
       <div className="rounded-lg border border-red-300 bg-red-50 p-4 dark:border-red-800 dark:bg-red-950">
         <p className="text-sm font-medium text-red-800 dark:text-red-200">
-          This will permanently delete your Lafiya card and all your data.
+          This will permanently delete your HenBridge card and all your data.
           Your emergency card URL will stop working immediately. This action
           cannot be undone.
         </p>

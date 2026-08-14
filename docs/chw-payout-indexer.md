@@ -2,7 +2,7 @@
 
 ## Event-source decision
 
-`lafiya-web` and its documented `lafiya-contracts` interface define
+`henbridge-web` and its documented `henbridge-contracts` interface define
 `attest(record_hash, attester, timestamp)` and `get_attestation(record_hash)`.
 They do not define a public contract event or an event topic. The indexer
 therefore does not assume that `getEvents` can see attestations.

@@ -12,7 +12,7 @@ import {
   withEntryMetaHeaders,
 } from "../../public/offline-cache-helpers.js";
 
-const ORIGIN = "https://lafiya.example";
+const ORIGIN = "https://henbridge.example";
 
 function cardUrl(id: string) {
   return `${ORIGIN}/card/${id}`;

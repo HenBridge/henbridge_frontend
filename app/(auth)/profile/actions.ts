@@ -318,7 +318,7 @@ export async function deleteAccount(
  * currently-computed record hash (recomputed fresh here, never trusted
  * from client input, so a stale/forged hash can't be queued). Minimal,
  * queue-only implementation — actually re-attesting is a CHW-facing tool
- * (lafiya-verifier) out of scope for this app; see
+ * (henbridge-verifier) out of scope for this app; see
  * supabase/migrations/20260729120200_reattestation_requests.sql.
  *
  * Idempotent: a second request for the same (user, hash) while one is

@@ -65,7 +65,7 @@ describe("seed_loadtest.sql", () => {
       users?.users.filter(
         (user) =>
           user.email?.startsWith("loadtest-") &&
-          user.email.endsWith("@lafiya.test"),
+          user.email.endsWith("@henbridge.test"),
       ) ?? [];
 
     const deleteBatchSize = 25;

@@ -2,7 +2,7 @@
 // (public/sw.js) and the unit tests. Keep this file free of any Service
 // Worker / DOM globals so it can be imported and exercised under Node/vitest.
 
-export const OFFLINE_BANNER_CLASS = "lafiya-offline-banner";
+export const OFFLINE_BANNER_CLASS = "henbridge-offline-banner";
 
 /**
  * Format an ISO timestamp into a human-readable, locale-aware string for the
@@ -82,9 +82,9 @@ export function injectOfflineBanner(html, isoString) {
 // there is simply nothing else for the metadata to disagree with.
 // ---------------------------------------------------------------------------
 
-export const CACHED_AT_HEADER = "x-lafiya-cached-at";
-export const LAST_ACCESSED_HEADER = "x-lafiya-last-accessed";
-export const BODY_SIZE_HEADER = "x-lafiya-body-size";
+export const CACHED_AT_HEADER = "x-henbridge-cached-at";
+export const LAST_ACCESSED_HEADER = "x-henbridge-last-accessed";
+export const BODY_SIZE_HEADER = "x-henbridge-body-size";
 
 // Defaults, sized against docs/perf-budget.md's per-card transfer budget
 // (<=110 kB compressed, worst case with a photo). Cache Storage holds the
@@ -287,7 +287,7 @@ export const OFFLINE_FALLBACK_HTML = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lafiya — offline</title>
+<title>HenBridge — offline</title>
 </head>
 <body style="margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b1020;color:#e5e7eb;">
 <div style="max-width:32rem;margin:0 auto;padding:3rem 1.5rem;">

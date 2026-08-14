@@ -9,8 +9,8 @@ Does this PR modify or touch a shared cross-repo contract?
 - [ ] **Yes**
 
 If **Yes**, please check which contract(s) are affected and provide details on how the change is coordinated:
-- [ ] **Attestation Schema** (effects on `lafiya-contracts`)
-- [ ] **Emergency Data Model** (effects on `lafiya-docs`)
+- [ ] **Attestation Schema** (effects on `henbridge-contracts`)
+- [ ] **Emergency Data Model** (effects on `henbridge-docs`)
 - [ ] **Environment/Config Keys** (effects on `.env.example`, stellar deployment keys, etc.)
 
 *Details on coordination:* 

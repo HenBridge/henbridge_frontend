@@ -1,4 +1,4 @@
-# Lafiya
+# HenBridge
 
 [![Built on Stellar](https://img.shields.io/badge/Built%20on-Stellar-blue?logo=stellar)](https://stellar.org)
 [![Soroban Smart Contracts](https://img.shields.io/badge/Smart%20Contracts-Soroban-purple)](https://soroban.stellar.org)
@@ -7,15 +7,15 @@
 
 A patient-owned emergency health card on Stellar — the vitals that decide emergency treatment travel with the patient as a scannable QR code, work offline, and can be cryptographically verified by a health worker so a first responder can trust them on the spot.
 
-_Lafiya_ is Hausa for health, safety, and wellbeing.
 
-> **Status:** Pre-alpha · Stellar **testnet** · Live: [lafiya-web.vercel.app](https://lafiya-web.vercel.app) · not yet audited · not a medical device. See [Disclaimer](#disclaimer).
+
+> **Status:** Pre-alpha · Stellar **testnet** · Live: [henbridge-web.vercel.app](https://henbridge-web.vercel.app) · not yet audited · not a medical device. See [Disclaimer](#disclaimer).
 
 ## Overview
 
-Lafiya is a free, patient-owned emergency health card. The handful of facts that change how a patient is treated in an emergency — blood group, genotype, allergies, current medications, chronic conditions — travel with them as a scannable QR code, work offline, and can be cryptographically verified by a health worker.
+HenBridge is a free, patient-owned emergency health card. The handful of facts that change how a patient is treated in an emergency — blood group, genotype, allergies, current medications, chronic conditions — travel with them as a scannable QR code, work offline, and can be cryptographically verified by a health worker.
 
-This repository (`lafiya-web`) contains the patient + responder web app — the Lafiya Card product surface: the public emergency page, the authenticated profile editor, and QR generation. The Soroban attestation contracts, CHW verifier tooling, and project docs live in separate repos — see [Lafiya Organization](#lafiya-organization) below.
+This repository (`henbridge-web`) contains the patient + responder web app — the HenBridge Card product surface: the public emergency page, the authenticated profile editor, and QR generation. The Soroban attestation contracts, CHW verifier tooling, and project docs live in separate repos — see [HenBridge Organization](#henbridge-organization) below.
 
 ### The Problem
 
@@ -26,7 +26,7 @@ In Nigeria, health records are paper, siloed per facility, and effectively lost 
 - **Unconscious or non-verbal patients** cannot supply the facts themselves
 - **No existing system** lets a first responder trust a record without calling the issuing facility
 
-### What Lafiya Does
+### What HenBridge Does
 
 - **For the patient / mother** — a free card carried on a phone or printed, that speaks for them when they can't
 - **For the responder / clinician** — scan the QR, no login, see only the decision-relevant subset, with a clear "verified" indicator that can be trusted
@@ -34,7 +34,7 @@ In Nigeria, health records are paper, siloed per facility, and effectively lost 
 
 ## Features
 
-- **Lafiya Card**: a patient-owned profile behind a login; the patient chooses exactly what appears on a minimal, read-only public emergency page reachable by QR
+- **HenBridge Card**: a patient-owned profile behind a login; the patient chooses exactly what appears on a minimal, read-only public emergency page reachable by QR
 - **Offline-first emergency page**: readable without a login and without a network connection once cached, so a responder can read it in a dead zone — implemented via a service worker (see [Architecture › Offline support](#offline-support))
 - **Cryptographic attestation (Soroban)**: a licensed health worker's verification is recorded on-chain as a hash of the record + the attester's identity + a timestamp — never the health data itself
 - **CHW incentive rails (USDC on Stellar)**: community health workers are paid a micro-amount per verified registration, with near-zero fees and stablecoin settlement
@@ -45,7 +45,7 @@ In Nigeria, health records are paper, siloed per facility, and effectively lost 
 
 ```mermaid
 graph TB
-    subgraph Card["Lafiya Card (lafiya-web)"]
+    subgraph Card["HenBridge Card (henbridge-web)"]
         PROFILE[Authenticated profile editor]
         PAGE[Public emergency page]
         QR[QR code]
@@ -55,7 +55,7 @@ graph TB
         SUPA[Supabase — encrypted Postgres + Row-Level Security]
     end
 
-    subgraph Proof["Lafiya Proof (lafiya-contracts)"]
+    subgraph Proof["HenBridge Proof (henbridge-contracts)"]
         ATTEST[Attestation registry — Soroban]
         ALLOW[Attester allowlist]
         PAY[USDC incentive payouts]
@@ -85,7 +85,7 @@ graph TB
 - **app/(public)/card/[id]**: public, read-only emergency page — the page a QR code points to
 - **app/(auth)/profile**: authenticated profile editor where a patient manages their private record
 - **lib/supabase/**: Supabase client/server helpers and hand-authored types for the off-chain encrypted store
-- **lib/stellar/**: Soroban attestation lookup — `getAttestation(recordHash)` calls the deployed `lafiya-contracts` registry over RPC when `ATTESTATION_CONTRACT_ID` is set, and falls back to an in-memory mock otherwise
+- **lib/stellar/**: Soroban attestation lookup — `getAttestation(recordHash)` calls the deployed `henbridge-contracts` registry over RPC when `ATTESTATION_CONTRACT_ID` is set, and falls back to an in-memory mock otherwise
 - **lib/qr/**: QR code generation for the emergency page
 
 ### Offline support
@@ -100,13 +100,13 @@ The public card page is the product surface that matters most precisely where th
 
 Implementation: `public/sw.js` (the worker), `public/offline-cache-helpers.js` (pure banner/injection helpers, unit-tested), and `app/offline-register.tsx` (registers the worker from the root layout, skipped in development).
 
-> **Composes with the wider offline epic.** This is the service-worker half of Lafiya's offline support. The companion pieces — a PWA manifest and a client-side card-data cache — slot in around the same `/card/*` boundary; see the issue batch. The service worker alone already satisfies "a previously-viewed card renders offline with a visible staleness indicator."
+> **Composes with the wider offline epic.** This is the service-worker half of HenBridge's offline support. The companion pieces — a PWA manifest and a client-side card-data cache — slot in around the same `/card/*` boundary; see the issue batch. The service worker alone already satisfies "a previously-viewed card renders offline with a visible staleness indicator."
 
-The Soroban attestation registry, attester allowlist, and CHW verifier tool live in the `lafiya-contracts` and `lafiya-verifier` repos respectively — see [Lafiya Organization](#lafiya-organization).
+The Soroban attestation registry, attester allowlist, and CHW verifier tool live in the `henbridge-contracts` and `henbridge-verifier` repos respectively — see [HenBridge Organization](#henbridge-organization).
 
 ## Attestation & Trust Layer
 
-Lafiya Proof is the Stellar-native trust and payment layer underneath the Lafiya Card:
+HenBridge Proof is the Stellar-native trust and payment layer underneath the HenBridge Card:
 
 | Layer                   | Mechanism                                                                       | What it guarantees                                                                                                                          |
 | ----------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -114,15 +114,15 @@ Lafiya Proof is the Stellar-native trust and payment layer underneath the Lafiya
 | **Incentive rails**     | USDC on Stellar, paid per verified registration                                 | Near-zero-fee, cross-border micropayments make last-mile CHW outreach economically viable                                                   |
 | **Transparent funding** | Grant and donor funds flow on-chain into the CHW incentive pool                 | Every donated dollar maps to a countable, auditable number of verified cards                                                                |
 
-> **Core design principle.** No personal health data ever touches the blockchain. Personal data lives in an encrypted, access-controlled off-chain database. Stellar holds only hashes, attestations, and payments. This is what keeps Lafiya both privacy-respecting and regulator-compatible — and it is why Stellar is a _core_ component here, not a database substitute.
+> **Core design principle.** No personal health data ever touches the blockchain. Personal data lives in an encrypted, access-controlled off-chain database. Stellar holds only hashes, attestations, and payments. This is what keeps HenBridge both privacy-respecting and regulator-compatible — and it is why Stellar is a _core_ component here, not a database substitute.
 
 ### Why Stellar (core, not shoehorned)
 
-Stellar/Soroban does two things Lafiya genuinely needs that a plain web app cannot: it makes verification tamper-evident and independently checkable without exposing data, and it moves stablecoin micropayments to health workers cheaply and across borders. Remove Stellar and the trust layer and the incentive engine both disappear.
+Stellar/Soroban does two things HenBridge genuinely needs that a plain web app cannot: it makes verification tamper-evident and independently checkable without exposing data, and it moves stablecoin micropayments to health workers cheaply and across borders. Remove Stellar and the trust layer and the incentive engine both disappear.
 
 ## Soroban Smart Contract Layer
 
-The Soroban contract is the on-chain trust layer for Lafiya attestations — planned for `lafiya-contracts`, landing with milestone **M1**.
+The Soroban contract is the on-chain trust layer for HenBridge attestations — planned for `henbridge-contracts`, landing with milestone **M1**.
 
 ### Contract Functions (planned)
 
@@ -131,7 +131,7 @@ The Soroban contract is the on-chain trust layer for Lafiya attestations — pla
 - `is_allowlisted(attester: Address) -> bool` - read-only; checks whether an address is a registered health worker
 
 ```rust
-// Planned Soroban interface (Rust pseudocode) — lands with lafiya-contracts, M1
+// Planned Soroban interface (Rust pseudocode) — lands with henbridge-contracts, M1
 pub struct Attestation {
     pub record_hash: BytesN<32>,  // hash of the patient record; never the data itself
     pub attester: Address,        // allowlisted health worker's Stellar address
@@ -141,7 +141,7 @@ pub struct Attestation {
 
 This composability lets a responder's scanner, or any other Stellar-aware verifier, confirm a record was attested by a real, allowlisted health worker — without an external oracle and without ever seeing the health data.
 
-**M1 handoff point.** This repo already has the pieces that plug into the contract above: `lib/attestation/recordHash.ts` computes the deterministic hash a `lafiya-contracts` call would use, and `lib/stellar/attestation.ts` exposes a `getAttestation(recordHash)` function with the signature the real Soroban call has. The body now performs a read-only `simulateTransaction` against `get_attestation` on the deployed `lafiya-contracts` registry (via the Stellar SDK) whenever `ATTESTATION_CONTRACT_ID` is configured, and falls back to the original in-memory mock when it isn't set — so the public card page and the attestation Route Handler need no changes. A missing/unattested record hash reverts in-contract and is returned as `null` (not verified).
+**M1 handoff point.** This repo already has the pieces that plug into the contract above: `lib/attestation/recordHash.ts` computes the deterministic hash a `henbridge-contracts` call would use, and `lib/stellar/attestation.ts` exposes a `getAttestation(recordHash)` function with the signature the real Soroban call has. The body now performs a read-only `simulateTransaction` against `get_attestation` on the deployed `henbridge-contracts` registry (via the Stellar SDK) whenever `ATTESTATION_CONTRACT_ID` is configured, and falls back to the original in-memory mock when it isn't set — so the public card page and the attestation Route Handler need no changes. A missing/unattested record hash reverts in-contract and is returned as `null` (not verified).
 
 ## Data Model (Emergency Subset)
 
@@ -163,14 +163,14 @@ Everything else (full history, documents, notes) stays private, behind authentic
 - Patients opt into exactly what appears on their public page.
 - No health data on-chain; only non-reversible hashes and attestations.
 
-For the current threat model, access paths, and accepted tradeoffs across the public card, attestation lookup, avatars bucket, and authenticated profile editor, see the shared document in the separate docs repo: [lafiya-docs threat model](../lafiya-docs/threat-model.md).
+For the current threat model, access paths, and accepted tradeoffs across the public card, attestation lookup, avatars bucket, and authenticated profile editor, see the shared document in the separate docs repo: [henbridge-docs threat model](../henbridge-docs/threat-model.md).
 
 ## Repository Structure
 
-This repository (`lafiya-web`) contains the patient + responder web app. The Soroban contracts, docs, and CHW verifier tool live in separate repos — see [Lafiya Organization](#lafiya-organization) below.
+This repository (`henbridge-web`) contains the patient + responder web app. The Soroban contracts, docs, and CHW verifier tool live in separate repos — see [HenBridge Organization](#henbridge-organization) below.
 
 ```
-lafiya-web/
+henbridge-web/
 │
 ├── README.md
 ├── package.json
@@ -227,7 +227,7 @@ npx supabase start
 cp .env.example .env.local
 ```
 
-`supabase start` prints an `ANON_KEY` and `SERVICE_ROLE_KEY` — put those (and the printed `API_URL`, usually `http://127.0.0.1:54321`) into `.env.local` as `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`. `supabase db reset` applies migrations and seeds one demo patient (`demo@lafiya.test` / `lafiya-demo-password`, card id `11111111-1111-1111-1111-111111111111`) for local testing. See [Lafiya Organization](#lafiya-organization) for what each variable is for.
+`supabase start` prints an `ANON_KEY` and `SERVICE_ROLE_KEY` — put those (and the printed `API_URL`, usually `http://127.0.0.1:54321`) into `.env.local` as `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`. `supabase db reset` applies migrations and seeds one demo patient (`demo@henbridge.test` / `henbridge-demo-password`, card id `11111111-1111-1111-1111-111111111111`) for local testing. See [HenBridge Organization](#henbridge-organization) for what each variable is for.
 
 ### 3. Run the dev server
 
@@ -260,7 +260,7 @@ Run `npm run lint && npm run typecheck && npm run build` for the same checks CI 
 Service-worker behaviour can't be exercised under jsdom, so verify it in a real browser (Chromium/Firefox/Safari) against a running dev or preview build:
 
 1. **Prerequisite:** `npm run dev` (or a production `npm run build && npm start`) with a reachable Supabase. Registration is skipped in `development` mode, so for the service worker to register, use a production build/start or temporarily force the register path.
-2. **Warm the cache:** open `/card/11111111-1111-1111-1111-111111111111` while online. Confirm the page renders and DevTools ▸ Application ▸ Service Workers shows `sw.js` as activated, and Cache Storage ▸ `lafiya-cards-v1` holds an entry for that URL.
+2. **Warm the cache:** open `/card/11111111-1111-1111-1111-111111111111` while online. Confirm the page renders and DevTools ▸ Application ▸ Service Workers shows `sw.js` as activated, and Cache Storage ▸ `henbridge-cards-v1` holds an entry for that URL.
 3. **Go offline:** in DevTools ▸ Network set "Offline" (or stop the network interface). Reload `/card/11111111-1111-1111-1111-111111111111`.
    - **Expected:** the card renders from cache, and a sticky amber banner reads `Showing cached data as of <time>. This may be out of date — verify with the patient or facility when you can.`
 4. **Scope check:** while offline, try a card id you have _never_ opened (e.g. `/card/22222222-2222-2222-2222-222222222222`).
@@ -272,7 +272,7 @@ Service-worker behaviour can't be exercised under jsdom, so verify it in a real 
 
 ### M0 — Public Card _(testnet)_
 
-- [x] Patient can create a profile via `lafiya-web` (auth, and a field-by-field editor: identity, blood group/genotype, allergies/medications, chronic conditions, up to 3 emergency contacts, optional photo)
+- [x] Patient can create a profile via `henbridge-web` (auth, and a field-by-field editor: identity, blood group/genotype, allergies/medications, chronic conditions, up to 3 emergency contacts, optional photo)
 - [x] Public, read-only emergency page reachable by QR, with a verified-indicator placeholder ahead of real M1 attestation
 - [x] Unit, component, and integration test coverage, with CI on every push/PR
 - [x] Offline-first emergency page: a service worker caches each visited `/card/[id]` and shows a "cached as of" indicator when read without a network — see [Architecture › Offline support](#offline-support)
@@ -280,9 +280,9 @@ Service-worker behaviour can't be exercised under jsdom, so verify it in a real 
 
 ### M1 — Attestation
 
-- [ ] Soroban attestation registry deployed (`lafiya-contracts`) — owned by that repo; set `ATTESTATION_CONTRACT_ID` here once shipped
-- [x] `lafiya-web` calls the real `get_attestation` Soroban function over RPC when `ATTESTATION_CONTRACT_ID` is set, falling back to the in-memory mock otherwise (`lib/stellar/attestation.ts`)
-- [ ] Allowlisted attester can verify a record (contract-side; `lafiya-contracts`)
+- [ ] Soroban attestation registry deployed (`henbridge-contracts`) — owned by that repo; set `ATTESTATION_CONTRACT_ID` here once shipped
+- [x] `henbridge-web` calls the real `get_attestation` Soroban function over RPC when `ATTESTATION_CONTRACT_ID` is set, falling back to the in-memory mock otherwise (`lib/stellar/attestation.ts`)
+- [ ] Allowlisted attester can verify a record (contract-side; `henbridge-contracts`)
 - [x] Card displays a verified indicator driven by the real attestation lookup (public card page + `/api/attestation/[recordHash]`)
 
 ### M2 — Incentives
@@ -304,14 +304,14 @@ Service-worker behaviour can't be exercised under jsdom, so verify it in a real 
 
 ## Why This Matters for the Stellar Ecosystem
 
-A health record that can't be trusted at the point of care is one that costs lives. Lafiya addresses this directly:
+A health record that can't be trusted at the point of care is one that costs lives. HenBridge addresses this directly:
 
 - **For patients and mothers** — a free card that speaks for them when they can't, without requiring technical expertise
 - **For responders and clinicians** — a verified indicator they can trust on the spot, with no login and no facility call required
 - **For community health workers** — a real, near-zero-fee income stream tied to verified registrations, solving last-mile distribution
 - **For the Stellar Foundation and ecosystem** — a Digital Public Good that demonstrates Soroban attestations and stablecoin micropayments solving a real-world, life-or-death problem
 
-Lafiya is built as an open-source **Digital Public Good** (SDG 3, Good Health and Well-being):
+HenBridge is built as an open-source **Digital Public Good** (SDG 3, Good Health and Well-being):
 
 - **Primary:** Stellar Community Fund (SCF) — Build track
 - **Bridge:** Registration against the Digital Public Goods Standard
@@ -333,11 +333,11 @@ Lafiya is built as an open-source **Digital Public Good** (SDG 3, Good Health an
 
 ## Contributing
 
-We welcome contributions to Lafiya! Please read our [Contributing Guide](CONTRIBUTING.md) for local setup, development guidelines, database migration instructions, and code conventions before submitting a pull request.
+We welcome contributions to HenBridge! Please read our [Contributing Guide](CONTRIBUTING.md) for local setup, development guidelines, database migration instructions, and code conventions before submitting a pull request.
 
 ### Operations & Observability
 
-Lafiya integrates structured JSON logging and Sentry error tracking for observability.
+HenBridge integrates structured JSON logging and Sentry error tracking for observability.
 
 #### Rules for Logging
 
@@ -352,24 +352,24 @@ To configure Sentry in your environment, define the following variables:
 - `NEXT_PUBLIC_SENTRY_DSN` - Sentry client/server DSN endpoint.
 - `SENTRY_AUTH_TOKEN` - (Optional) Sentry build-time authentication token. If not provided, source map uploads are dynamically disabled during builds to prevent compilation failure.
 
-## Lafiya Organization
+## HenBridge Organization
 
-This project lives under the `lafiya-xyz` GitHub organization. This repo is one of five. If a change here touches a shared contract (below), call it out so the matching repo can be updated.
+This project lives under the `henbridge` GitHub organization. This repo is one of five. If a change here touches a shared contract (below), call it out so the matching repo can be updated.
 
 | Repo                                                                   | Role                                                                                      | Primary language     |
 | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | -------------------- |
-| [`.github`](https://github.com/lafiya-xyz/.github)                     | Organization profile README and contribution guidelines                                   | Markdown             |
-| [`lafiya-docs`](https://github.com/lafiya-xyz/lafiya-docs)             | Concept note, data model, threat model, privacy design, funding/DPG materials, references | Markdown             |
-| [`lafiya-web`](https://github.com/lafiya-xyz/lafiya-web) _(this repo)_ | Patient + responder web app. Public emergency page, authed profile editor, QR generation  | TypeScript (Next.js) |
-| [`lafiya-contracts`](https://github.com/lafiya-xyz/lafiya-contracts)   | Soroban smart contracts (Rust): attestation registry + attester allowlist. Testnet first  | Rust (Soroban)       |
-| [`lafiya-verifier`](https://github.com/lafiya-xyz/lafiya-verifier)     | CHW verification tool. Begins as a route inside `lafiya-web`; split out only if it grows  | TypeScript (planned) |
+| [`.github`](https://github.com/henbridge/.github)                     | Organization profile README and contribution guidelines                                   | Markdown             |
+| [`henbridge-docs`](https://github.com/HenBridge/henbridge_docs)             | Concept note, data model, threat model, privacy design, funding/DPG materials, references | Markdown             |
+| [`henbridge-web`](https://github.com/HenBridge/henbridge_frontend) _(this repo)_ | Patient + responder web app. Public emergency page, authed profile editor, QR generation  | TypeScript (Next.js) |
+| [`henbridge-contracts`](https://github.com/HenBridge/henbridge_contract)   | Soroban smart contracts (Rust): attestation registry + attester allowlist. Testnet first  | Rust (Soroban)       |
+| [`henbridge-verifier`](https://github.com/HenBridge/henbridge_backend)     | CHW verification tool. Begins as a route inside `henbridge-web`; split out only if it grows  | TypeScript (planned) |
 
-> Resist scaffolding empty repos. Two working repos (`lafiya-web`, `lafiya-contracts`) beat five half-built ones. Build one honest milestone at a time.
+> Resist scaffolding empty repos. Two working repos (`henbridge-web`, `henbridge-contracts`) beat five half-built ones. Build one honest milestone at a time.
 
 ### Data Flow
 
 ```
-lafiya-docs        ──(data model, threat model)──▶  lafiya-web
+henbridge-docs        ──(data model, threat model)──▶  henbridge-web
                                                         │
    patient input ──(profile data)──▶                   │  (Supabase, encrypted)
                                                         │
@@ -378,7 +378,7 @@ lafiya-docs        ──(data model, threat model)──▶  lafiya-web
                                                         │
                         ┌───────────────────────────────┴───────────────────────────────┐
                         ▼                                                               ▼
-              lafiya-contracts (Soroban)                                    lafiya-verifier (CHW tool)
+              henbridge-contracts (Soroban)                                    henbridge-verifier (CHW tool)
                         │                                                               │
                         ▼                                                               ▼
         On-chain attestation + USDC payout                          Responder scans QR, sees verified flag
@@ -386,7 +386,7 @@ lafiya-docs        ──(data model, threat model)──▶  lafiya-web
 
 ### Shared Contracts (must stay in sync across repos)
 
-**1. Attestation schema** — a hash of the record + the attester's identity + a timestamp, defined conceptually here and mirrored by `lafiya-contracts`'s on-chain `Attestation` struct:
+**1. Attestation schema** — a hash of the record + the attester's identity + a timestamp, defined conceptually here and mirrored by `henbridge-contracts`'s on-chain `Attestation` struct:
 
 ```
 Attestation {
@@ -396,9 +396,9 @@ Attestation {
 }
 ```
 
-If you change a field name, type, or hashing scheme here, update the Rust struct in `lafiya-contracts` in the same change set (or open a tracked follow-up in each repo).
+If you change a field name, type, or hashing scheme here, update the Rust struct in `henbridge-contracts` in the same change set (or open a tracked follow-up in each repo).
 
-**2. Emergency data model** — the field list in [Data Model](#data-model-emergency-subset) is the canonical decision-relevant subset. `lafiya-docs` mirrors it in the full data model / threat model; changing a field name here requires an update there.
+**2. Emergency data model** — the field list in [Data Model](#data-model-emergency-subset) is the canonical decision-relevant subset. `henbridge-docs` mirrors it in the full data model / threat model; changing a field name here requires an update there.
 
 **3. Environment variables / config keys** — `.env.example` defines the cross-repo keys:
 
@@ -406,7 +406,7 @@ If you change a field name, type, or hashing scheme here, update the Rust struct
 - `SUPABASE_SERVICE_ROLE_KEY` — server-only, bypasses RLS; never exposed to the browser
 - `STELLAR_NETWORK_PASSPHRASE` — must match the network the contracts are deployed on
 - `SOROBAN_RPC_URL` — Soroban RPC endpoint (testnet first)
-- `ATTESTATION_CONTRACT_ID` — the deployed `lafiya-contracts` attestation registry contract id. **Optional:** when unset (local dev, CI, pre-deploy), `getAttestation` serves the in-memory mock so the verified indicator still renders
+- `ATTESTATION_CONTRACT_ID` — the deployed `henbridge-contracts` attestation registry contract id. **Optional:** when unset (local dev, CI, pre-deploy), `getAttestation` serves the in-memory mock so the verified indicator still renders
 - `STELLAR_HORIZON_URL` / `STELLAR_USDC_ISSUER` — Horizon endpoint and the
   exact issuer of accepted USDC payments
 - `CHW_INCENTIVE_POOL_ADDRESS` — source account whose outgoing USDC payments
@@ -423,7 +423,7 @@ and retention behavior are documented in
 
 ### Open Integration Points (not yet implemented)
 
-- How `lafiya-web` calls `lafiya-contracts` — direct Soroban RPC from the app vs. a thin backend service
+- How `henbridge-web` calls `henbridge-contracts` — direct Soroban RPC from the app vs. a thin backend service
 - How the attester allowlist is managed and updated — governance model not yet decided
 - The exact USDC payout trigger — per attestation event vs. batched payouts
 
@@ -433,15 +433,15 @@ An agent working in only one of the five repos above can't see the others' code,
 
 - Treat this section as the source of truth for **cross-repo** contracts. Each repo's own README covers repo-local conventions.
 - When a change in this repo affects a shared contract above, call it out explicitly so the corresponding change can be made in the other repo(s) — don't silently assume it'll happen separately.
-- Never let personal health data reach an on-chain call — only hashes, attester identity, and timestamps belong in `lafiya-contracts` calls. This is a hard invariant, not a style preference.
+- Never let personal health data reach an on-chain call — only hashes, attester identity, and timestamps belong in `henbridge-contracts` calls. This is a hard invariant, not a style preference.
 - Keep attestation and health-record field names identical (same casing, same units) across TypeScript (`web`), Rust (`contracts`), and Markdown (`docs`) — translation layers are a common source of bugs.
-- If you land in `lafiya-docs`, read its data model doc before touching any patient-data field name anywhere in the org. If you land in `lafiya-contracts`, read the `Attestation` struct definition before changing the hash/attester/timestamp shape. If you land in `lafiya-verifier`, note it currently lives inside `lafiya-web` at `app/(auth)/profile` and the attestation-lookup code, not as a standalone repo yet.
+- If you land in `henbridge-docs`, read its data model doc before touching any patient-data field name anywhere in the org. If you land in `henbridge-contracts`, read the `Attestation` struct definition before changing the hash/attester/timestamp shape. If you land in `henbridge-verifier`, note it currently lives inside `henbridge-web` at `app/(auth)/profile` and the attestation-lookup code, not as a standalone repo yet.
 
 ## Support
 
 For issues and questions:
 
-- GitHub Issues: [Create an issue](https://github.com/lafiya-xyz/lafiya-web/issues)
+- GitHub Issues: [Create an issue](https://github.com/HenBridge/henbridge_frontend/issues)
 - SECURITY policy: [SECURITY.md](SECURITY.md)
 
 ## Testing
@@ -452,17 +452,17 @@ For issues and questions:
 
 ## Disclaimer
 
-Lafiya is an information aid, **not a medical device** and **not a substitute for professional medical judgment**. Verified indicators reflect that a record was attested by a registered health worker; they are not a clinical guarantee. Treatment decisions remain the responsibility of the attending clinician.
+HenBridge is an information aid, **not a medical device** and **not a substitute for professional medical judgment**. Verified indicators reflect that a record was attested by a registered health worker; they are not a clinical guarantee. Treatment decisions remain the responsibility of the attending clinician.
 
 ## References
 
-These works directly informed Lafiya's design and are the intended reading for contributors.
+These works directly informed HenBridge's design and are the intended reading for contributors.
 
 **Books**
 
 - Shortliffe, E. H., & Cimino, J. J. (Eds.). (2021). _Biomedical Informatics: Computer Applications in Health Care and Biomedicine_ (5th ed.). Springer. — Grounds the clinical data model: which fields are decision-relevant in an emergency, and how health records are structured and coded.
-- Preukschat, A., & Reed, D. (2021). _Self-Sovereign Identity: Decentralized Digital Identity and Verifiable Credentials_. Manning. — The blueprint for Lafiya Proof: issuer/holder/verifier roles, verifiable credentials, hash-based attestation, key management, and offline verification.
-- Toyama, K. (2015). _Geek Heresy: Rescuing Social Change from the Cult of Technology_. PublicAffairs. — Keeps the project honest: technology amplifies human capacity rather than replacing it, which is why Lafiya centers community health workers, not the app.
+- Preukschat, A., & Reed, D. (2021). _Self-Sovereign Identity: Decentralized Digital Identity and Verifiable Credentials_. Manning. — The blueprint for HenBridge Proof: issuer/holder/verifier roles, verifiable credentials, hash-based attestation, key management, and offline verification.
+- Toyama, K. (2015). _Geek Heresy: Rescuing Social Change from the Cult of Technology_. PublicAffairs. — Keeps the project honest: technology amplifies human capacity rather than replacing it, which is why HenBridge centers community health workers, not the app.
 - Kleppmann, M. (2017). _Designing Data-Intensive Applications_. O'Reilly. — Informs the off-chain data layer: reliable and secure storage, encryption, and the boundary between what lives in the database and what is anchored on-chain.
 - Martin, R. C. (2017). _Clean Architecture: A Craftsman's Guide to Software Structure and Design_. Prentice Hall. — Discipline for an AI-assisted codebase: clear boundaries so the app, the contracts, and the data layer stay independently maintainable.
 
@@ -478,7 +478,7 @@ These works directly informed Lafiya's design and are the intended reading for c
 
 <div align="center">
 
-**Lafiya** — Your vitals, verified. When you can't speak, Lafiya does.
+**HenBridge** — Your vitals, verified. When you can't speak, HenBridge does.
 
 _Built for the Stellar ecosystem. Open source. Community owned._
 

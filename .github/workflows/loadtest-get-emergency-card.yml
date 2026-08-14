@@ -78,7 +78,7 @@ jobs:
           if [ -z "$DB_URL" ]; then
             DB_URL="postgresql://postgres:postgres@127.0.0.1:54322/postgres"
           fi
-          COUNT=$(psql "$DB_URL" -t -c "SELECT count(*) FROM public.profiles WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE 'loadtest-%@lafiya.test');")
+          COUNT=$(psql "$DB_URL" -t -c "SELECT count(*) FROM public.profiles WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE 'loadtest-%@henbridge.test');")
           COUNT=$(echo "$COUNT" | tr -d '[:space:]')
           echo "Seeded $COUNT load-test profiles"
           if [ "$COUNT" -lt 100 ]; then

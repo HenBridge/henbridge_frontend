@@ -6,7 +6,7 @@ import { QrCardDisplay } from "./qr-card-display";
 describe("QrCardDisplay", () => {
   it("renders a QR image and the plain-text card URL", async () => {
     const cardUrl =
-      "https://lafiya.example/card/11111111-1111-1111-1111-111111111111";
+      "https://henbridge.example/card/11111111-1111-1111-1111-111111111111";
     const jsx = await QrCardDisplay({ cardUrl });
     render(jsx);
 

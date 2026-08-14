@@ -52,7 +52,7 @@ The circuit breaker must provide real protection in the project's actual deploym
 - [ ] PR description documents and justifies the chosen circuit-breaker deployment model (per-instance vs. distributed) with explicit reasoning about Vercel's concurrency/instance-reuse behavior.
 
 ## Out of scope
-- The Soroban contract itself (`lafiya-contracts`, a separate repo) — do not change the on-chain `Attestation` struct or `get_attestation` semantics.
+- The Soroban contract itself (`henbridge-contracts`, a separate repo) — do not change the on-chain `Attestation` struct or `get_attestation` semantics.
 - Cache invalidation via `revalidateTag` on a "new attestation recorded" signal (tracked separately in the code as a follow-up; do not build an event-listener here — see the CHW payout listener issue in this batch for the related on-chain-event-consumption problem).
 - The offline service-worker cache and card-ID-rotation cache-revocation problems (separate issues in this batch) — do not touch `app/public/sw.js`.
 - Rewriting the record-hash computation itself (separate issue in this batch).

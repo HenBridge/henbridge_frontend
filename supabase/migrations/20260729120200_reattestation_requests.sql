@@ -4,7 +4,7 @@
 -- requestReattestation in app/(auth)/profile/actions.ts). This table is the
 -- request queue only — actually re-attesting (a CHW/health-worker action
 -- against the Soroban contract) is a separate, out-of-repo tool
--- (lafiya-verifier); this table is what that tool would poll/consume.
+-- (henbridge-verifier); this table is what that tool would poll/consume.
 create table public.reattestation_requests (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users (id) on delete cascade,

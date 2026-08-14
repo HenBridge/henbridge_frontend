@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy — Lafiya",
+  title: "Privacy — HenBridge",
   robots: { index: false, follow: false },
 };
 
@@ -26,7 +26,7 @@ export default function PrivacyPage() {
             What we collect
           </h2>
           <p>
-            Lafiya collects only the emergency-relevant subset of a patient&apos;s
+            HenBridge collects only the emergency-relevant subset of a patient&apos;s
             profile needed for first responders to make safe treatment decisions.
             This is:
           </p>
@@ -101,7 +101,7 @@ export default function PrivacyPage() {
           <p>
             You can export or delete your data at any time from the profile
             editor. If you need assistance exercising these rights, contact us
-            through the support channels listed on the Lafiya Card.
+            through the support channels listed on the HenBridge Card.
           </p>
         </section>
 
@@ -110,15 +110,15 @@ export default function PrivacyPage() {
             Contact
           </h2>
           <p>
-            Lafiya is an open-source project. For privacy-related questions or
+            HenBridge is an open-source project. For privacy-related questions or
             concerns, open an issue at{" "}
             <a
-              href="https://github.com/lafiya-xyz/lafiya-web/issues"
+              href="https://github.com/HenBridge/henbridge_frontend/issues"
               className="underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              github.com/lafiya-xyz/lafiya-web
+              github.com/HenBridge/henbridge_frontend
             </a>
             .
           </p>
