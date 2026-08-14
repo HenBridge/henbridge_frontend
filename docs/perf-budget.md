@@ -1,4 +1,4 @@
-# Lafiya Card — Payload Budget
+# HenBridge Card — Payload Budget
 
 Route: `app/(public)/card/[id]`  
 Updated: 2026-07-18
@@ -7,7 +7,7 @@ Updated: 2026-07-18
 
 ## Why this budget exists
 
-The emergency card page is the one page in Lafiya that must load fast under
+The emergency card page is the one page in HenBridge that must load fast under
 the worst conditions a responder is likely to encounter in the field:
 
 - **2G EDGE** (~250 kbps effective throughput, ~400 ms RTT)

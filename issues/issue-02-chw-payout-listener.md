@@ -11,7 +11,7 @@ No such listener exists anywhere in the repository. A repo-wide search for `list
 
 ## Problem statement
 Design and implement a durable event-indexing service that:
-1. Observes Soroban contract events (or, if events aren't emitted by the `attest` function per the current `lafiya-contracts` interface, polls `get_attestation`/ledger state as a fallback — you must determine which is actually available and justify your choice) to detect new attestations, and inserts a `pending` row into `chw_payouts` for each newly attested `record_hash` with the attesting CHW's Stellar address and the attestation timestamp.
+1. Observes Soroban contract events (or, if events aren't emitted by the `attest` function per the current `henbridge-contracts` interface, polls `get_attestation`/ledger state as a fallback — you must determine which is actually available and justify your choice) to detect new attestations, and inserts a `pending` row into `chw_payouts` for each newly attested `record_hash` with the attesting CHW's Stellar address and the attestation timestamp.
 2. Observes Stellar payment operations (USDC trustline payments) to the CHW incentive pool/allowlisted CHW addresses, correlates each payment to the corresponding `pending` `chw_payouts` row, and transitions it to `paid` with the observed `payout_tx_hash` and `paid_at`.
 3. Is crash-safe and resumable: the process must persist a durable cursor (last-processed ledger sequence or paging token) so that a restart, deploy, or crash resumes from where it left off rather than reprocessing the entire ledger history or silently skipping a gap.
 4. Is idempotent: reprocessing the same ledger range (e.g., after a crash mid-batch) must not produce duplicate rows or violate the `chw_payouts_record_hash_unique` constraint — upserts must be safe to retry.
@@ -33,11 +33,11 @@ Design and implement a durable event-indexing service that:
 - Must write through a Supabase client using the service role (`lib/supabase/admin.ts`'s `createAdminClient`), since RLS on `chw_payouts` grants no write access to any non-service role — do not add a permissive RLS policy as a shortcut.
 - Must not modify the `chw_payouts` schema in a way that breaks the existing `status`/`payout_tx_hash` check constraint contract, unless a new migration is added that preserves backward-compatible semantics for any already-written rows.
 - No new heavy message-queue infrastructure (Kafka, RabbitMQ) — this must run within the project's existing Supabase + serverless/cron deployment model.
-- Must not fabricate or synthesize payout data in the absence of real on-chain events — if the `lafiya-contracts` repo's `attest` function does not currently emit a subscribable event, you must build against whatever read primitive Soroban actually exposes today (state polling via `get_attestation`/ledger entries) and document that constraint explicitly rather than assuming an event stream that may not exist.
+- Must not fabricate or synthesize payout data in the absence of real on-chain events — if the `henbridge-contracts` repo's `attest` function does not currently emit a subscribable event, you must build against whatever read primitive Soroban actually exposes today (state polling via `get_attestation`/ledger entries) and document that constraint explicitly rather than assuming an event stream that may not exist.
 - Do not rely on repository snapshots or point-in-time repo states; work against the live default branch only.
 
 ## Acceptance criteria
-- [ ] A documented design decision (in the PR) on event-source strategy (event subscription vs. polling) with justification tied to what `lafiya-contracts`/Soroban RPC actually exposes.
+- [ ] A documented design decision (in the PR) on event-source strategy (event subscription vs. polling) with justification tied to what `henbridge-contracts`/Soroban RPC actually exposes.
 - [ ] Unit tests proving idempotent upsert behavior: running the same batch of synthetic on-chain events twice produces exactly one row per `record_hash`, no constraint violations.
 - [ ] Unit tests proving crash-resume correctness: simulate a crash after partially processing a batch, restart from the persisted cursor, and prove no event is skipped and none is double-applied.
 - [ ] A test proving the out-of-order race (payout event observed before the attestation row exists) resolves correctly to a `paid` row once both events are processed, regardless of arrival order.
@@ -45,11 +45,11 @@ Design and implement a durable event-indexing service that:
 - [ ] `npm run typecheck`, `npm run lint`, and the existing test suite continue to pass.
 
 ## Out of scope
-- Any change to the `lafiya-contracts` Rust contract itself — if it needs new events emitted to make this tractable, document that as a cross-repo follow-up rather than modifying contracts here.
-- The `lafiya-verifier` CHW-facing UI for viewing payouts — this issue is the data pipeline only, not a UI.
+- Any change to the `henbridge-contracts` Rust contract itself — if it needs new events emitted to make this tractable, document that as a cross-repo follow-up rather than modifying contracts here.
+- The `henbridge-verifier` CHW-facing UI for viewing payouts — this issue is the data pipeline only, not a UI.
 - The attestation lookup/circuit-breaker work (separate issue in this batch).
 
 ## Hints and references
 - Stellar Horizon's `/payments` streaming endpoint and cursor/paging-token model (`https://developers.stellar.org/docs/data/horizon` — streaming and pagination sections) as one viable event-source strategy.
-- Soroban RPC's `getEvents` method for contract-emitted events, if `lafiya-contracts`'s `attest` function emits one — verify this against the contract's actual ABI/interface rather than assuming.
+- Soroban RPC's `getEvents` method for contract-emitted events, if `henbridge-contracts`'s `attest` function emits one — verify this against the contract's actual ABI/interface rather than assuming.
 - General exactly-once-processing patterns for at-least-once event sources: idempotency keys + durable checkpointing (the `record_hash` unique constraint is already a natural idempotency key for the attestation side; the payout side needs an equivalent, likely the Stellar transaction hash).
