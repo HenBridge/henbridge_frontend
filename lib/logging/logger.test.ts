@@ -91,7 +91,7 @@ describe("Structured Logging & Redaction", () => {
       const input = {
         email: "user@example.com",
         password: "secretpassword123",
-        message: "Failed login attempt for admin@lafiya.test",
+        message: "Failed login attempt for admin@henbridge.test",
       };
 
       const expected = {
