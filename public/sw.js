@@ -1,4 +1,4 @@
-// Lafiya offline service worker — scoped to public emergency card pages.
+// HenBridge offline service worker — scoped to public emergency card pages.
 //
 // Strategy: "cache after a real visit" (network-first with cache fallback).
 // On every successful navigation to /card/* we store the rendered HTML
@@ -26,8 +26,8 @@ import {
   withEntryMetaHeaders,
 } from "./offline-cache-helpers.js";
 
-const CARD_CACHE = "lafiya-cards-v2";
-const STYLE_CACHE = "lafiya-styles-v2";
+const CARD_CACHE = "henbridge-cards-v2";
+const STYLE_CACHE = "henbridge-styles-v2";
 const CARD_PATH_PREFIX = "/card/";
 
 self.addEventListener("install", () => {
@@ -79,7 +79,7 @@ self.addEventListener("fetch", (event) => {
 async function withCacheLock(name, fn) {
   const locks = self.navigator && self.navigator.locks;
   if (locks && typeof locks.request === "function") {
-    return locks.request(`lafiya-cache:${name}`, fn);
+    return locks.request(`henbridge-cache:${name}`, fn);
   }
   return fn();
 }
