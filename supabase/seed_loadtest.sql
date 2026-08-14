@@ -32,7 +32,7 @@ SELECT
   gen_random_uuid(),
   'authenticated',
   'authenticated',
-  'loadtest-' || n || '@lafiya.test',
+  'loadtest-' || n || '@henbridge.test',
   -- Not a real password — these accounts are never signed into.
   crypt('loadtest-password', gen_salt('bf')),
   now(),
@@ -66,7 +66,7 @@ SELECT
   now(),
   now()
 FROM auth.users u
-WHERE u.email LIKE 'loadtest-%@lafiya.test'
+WHERE u.email LIKE 'loadtest-%@henbridge.test'
 ON CONFLICT DO NOTHING;
 
 -- Step 3: Seed public.profiles with the correct column name (user_id, not id)
@@ -102,8 +102,8 @@ SELECT
   '[]'::jsonb,
   (ARRAY['en','ha','yo','ig'])[floor(random() * 4 + 1)::int]
 FROM auth.users u
-WHERE u.email LIKE 'loadtest-%@lafiya.test'
+WHERE u.email LIKE 'loadtest-%@henbridge.test'
 ON CONFLICT (user_id) DO NOTHING;
 
 -- Step 4: Export card IDs for the k6 script.
-\copy (SELECT card_public_id FROM public.profiles WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE 'loadtest-%@lafiya.test')) TO 'loadtest/card_ids.txt';
+\copy (SELECT card_public_id FROM public.profiles WHERE user_id IN (SELECT id FROM auth.users WHERE email LIKE 'loadtest-%@henbridge.test')) TO 'loadtest/card_ids.txt';

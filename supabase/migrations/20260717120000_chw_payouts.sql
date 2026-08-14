@@ -2,7 +2,7 @@
 --
 -- On-chain vs off-chain relationship
 -- -----------------------------------
--- The Stellar ledger (via lafiya-contracts) is the source of truth for whether
+-- The Stellar ledger (via henbridge-contracts) is the source of truth for whether
 -- a CHW was actually paid: it holds the USDC transfer itself. This table does
 -- NOT replace that. It is a queryable, RLS-protected mirror, populated by a
 -- listener process that observes attestation + payout events on-chain and
@@ -23,14 +23,14 @@ create table if not exists public.chw_payouts (
     -- CHW identity: Stellar address is the durable identity (works even before
       -- a CHW has linked an app account). chw_id links to a Supabase auth user
         -- once/if the CHW authenticates through the app (coordinate with however
-          -- lafiya-verifier ends up authenticating CHWs). RLS is scoped on chw_id,
+          -- henbridge-verifier ends up authenticating CHWs). RLS is scoped on chw_id,
             -- so rows are only visible to their owner once linked.
               stellar_address text not null,
                 chw_id uuid references auth.users (id) on delete set null,
 
                   -- The verification event this payout is for. Matches the record_hash
                     -- produced by lib/attestation/recordHash.ts and used in the on-chain
-                      -- Attestation struct (lafiya-contracts). One payout row per verification.
+                      -- Attestation struct (henbridge-contracts). One payout row per verification.
                         record_hash text not null,
                           attested_at timestamptz not null,
 
