@@ -8,7 +8,7 @@ export async function GET() {
     return NextResponse.json({ error: result.error }, { status: 401 });
   }
 
-  const filename = `lafiya-profile-export-${new Date()
+  const filename = `henbridge-profile-export-${new Date()
     .toISOString()
     .slice(0, 10)}.json`;
 

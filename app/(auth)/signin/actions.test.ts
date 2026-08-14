@@ -123,7 +123,7 @@ describe("signIn server action rate limiting", () => {
     mockSignInWithPassword.mockResolvedValue({ data: { user: {} }, error: null });
 
     const formData = new FormData();
-    formData.append("email", "patient@lafiya.com");
+    formData.append("email", "patient@henbridge.com");
     formData.append("password", "correct-password");
 
     const result = await signIn(undefined, formData);
@@ -137,7 +137,7 @@ describe("signIn server action rate limiting", () => {
     mockSignInWithPassword.mockResolvedValue({ data: null, error: new Error("Invalid credentials") });
 
     const formData = new FormData();
-    formData.append("email", "patient@lafiya.com");
+    formData.append("email", "patient@henbridge.com");
     formData.append("password", "wrong-password");
 
     const result = await signIn(undefined, formData);
@@ -151,7 +151,7 @@ describe("signIn server action rate limiting", () => {
     mockSignInWithPassword.mockResolvedValue({ data: null, error: new Error("Invalid credentials") });
 
     const formData = new FormData();
-    formData.append("email", "patient@lafiya.com");
+    formData.append("email", "patient@henbridge.com");
     formData.append("password", "wrong-password");
 
     // First 4 attempts: allowed but return error
@@ -176,7 +176,7 @@ describe("signIn server action rate limiting", () => {
   it("keys rate limit by email and IP address combination", async () => {
     mockSignInWithPassword.mockResolvedValue({ data: null, error: new Error("Invalid credentials") });
 
-    // Lockout patient@lafiya.com from IP 192.168.1.1
+    // Lockout patient@henbridge.com from IP 192.168.1.1
     mockHeaders.mockResolvedValue({
       get: (name: string) => {
         if (name === "x-forwarded-for") return "192.168.1.1";
@@ -185,7 +185,7 @@ describe("signIn server action rate limiting", () => {
     });
     
     const formData1 = new FormData();
-    formData1.append("email", "patient@lafiya.com");
+    formData1.append("email", "patient@henbridge.com");
     formData1.append("password", "wrong-password");
 
     for (let i = 0; i < 5; i++) {
@@ -216,7 +216,7 @@ describe("signIn server action rate limiting", () => {
     });
     
     const formData2 = new FormData();
-    formData2.append("email", "other@lafiya.com");
+    formData2.append("email", "other@henbridge.com");
     formData2.append("password", "wrong-password");
     
     const allowedEmailRes = await signIn(undefined, formData2);
@@ -228,11 +228,11 @@ describe("signIn server action rate limiting", () => {
 
     // Failed attempts with different casings and whitespace
     const emails = [
-      "patient@lafiya.com",
-      " PATIENT@lafiya.com ",
-      "patient@LAFIYA.com",
-      "Patient@Lafiya.Com",
-      "  patient@lafiya.com  ",
+      "patient@henbridge.com",
+      " PATIENT@henbridge.com ",
+      "patient@HENBRIDGE.com",
+      "Patient@HenBridge.Com",
+      "  patient@henbridge.com  ",
     ];
 
     for (const email of emails) {
@@ -244,7 +244,7 @@ describe("signIn server action rate limiting", () => {
 
     // The 6th attempt (even with original casing) should be blocked immediately
     const formData6 = new FormData();
-    formData6.append("email", "patient@lafiya.com");
+    formData6.append("email", "patient@henbridge.com");
     formData6.append("password", "wrong-password");
     
     vi.clearAllMocks();

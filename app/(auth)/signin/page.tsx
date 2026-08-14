@@ -15,7 +15,7 @@ export default function SignInPage() {
           Sign in
         </h1>
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          Access your Lafiya card.
+          Access your HenBridge card.
         </p>
 
         <form action={formAction} className="mt-8 flex flex-col gap-4">
